@@ -1,5 +1,5 @@
-const { default: mongoose } = require('mongoose');
 const Joi = require('joi');
+const { default: mongoose } = require('mongoose');
 
 const customerSchema = new mongoose.Schema({
   name: {
