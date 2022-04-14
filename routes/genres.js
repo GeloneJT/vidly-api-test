@@ -9,6 +9,7 @@ const router = express.Router();
 router.get(
   '/',
   asyncMiddleware(async (req, res) => {
+    // throw new Error('Could not get the genres');  // Uncomment to simulate error for winston to catch
     const genres = await Genre.find().sort('type');
     res.send(genres);
   })
