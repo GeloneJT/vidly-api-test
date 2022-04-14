@@ -1,3 +1,4 @@
+const asyncMiddleware = require('../middleware/async')
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const { Genre, validate } = require('../models/genre');
@@ -5,14 +6,13 @@ const express = require('express');
 const router = express.Router();
 
 //  GET Endpoint to get all genres
-router.get('/', async (req, res, next) => {
-  try {
+router.get(
+  '/',
+  asyncMiddleware(async (req, res) => {
     const genres = await Genre.find().sort('type');
     res.send(genres);
-  } catch (ex) {
-    next(ex)
-  }
-});
+  })
+);
 
 //  GET Endpoint to find a genre based on the ID number
 router.get('/:id', async (req, res) => {
