@@ -30,7 +30,7 @@ A MongoDB database profile must be made in order for data to be saved/retrieved.
 Once your MongoDB profile is set up run the following command in your terminal IDE to launch the server.
 
 ```
-nodemon index.js
+nodemon
 ```
 If met with the error...
 ```
