@@ -5,9 +5,13 @@ const express = require('express');
 const router = express.Router();
 
 //  GET Endpoint to get all genres
-router.get('/', async (req, res) => {
-  const genres = await Genre.find().sort('type');
-  res.send(genres);
+router.get('/', async (req, res, next) => {
+  try {
+    const genres = await Genre.find().sort('type');
+    res.send(genres);
+  } catch (ex) {
+    next(ex)
+  }
 });
 
 //  GET Endpoint to find a genre based on the ID number
