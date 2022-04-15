@@ -20,9 +20,11 @@ const error = require('./middleware/error');
 const app = express();
 
 winston.createLogger({
-  format: winston.format.json(),
+  format: winston.format.metadata(),
   transports: [
-    winston.add(new winston.transports.File({ filename: 'logfile.log' })),
+    winston.add(
+      new winston.transports.File({ filename: 'logfile.log', level: 'error' })
+    ),
     winston.add(
       new winston.transports.MongoDB({ db: 'mongodb://localhost/vidly' })
     ),
