@@ -19,6 +19,12 @@ const auth = require('./routes/auth');
 const error = require('./middleware/error');
 const app = express();
 
+process.on('uncaughtException', (ex) => {
+  console.log('UNCAUGHT EXCEPTION');
+  winston.error(ex.message, ex);
+  FIXME: 'Winston currently sends three logs when a startup error is simulated'
+});
+
 winston.createLogger({
   format: winston.format.metadata(),
   transports: [
@@ -30,6 +36,8 @@ winston.createLogger({
     ),
   ],
 });
+
+// throw new Error('Something failed durting startup'); //  Uncomment to simulate failed server startup
 
 if (!config.get('jwtPrivateKey')) {
   console.error('FATAL ERROR: jwtPrivateKey is not defined');
