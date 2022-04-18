@@ -13,13 +13,11 @@ module.exports = function () {
     rejectionHandlers: [
       new winston.transports.File({
         filename: 'rejections.log',
-        handleRejections: true,
       }),
     ],
     exceptionHandlers: [
       new winston.transports.File({
         filename: 'uncaughtExceptions.log',
-        handleExceptions: true,
       }),
     ],
   });
