@@ -10,19 +10,17 @@ module.exports = function () {
         new winston.transports.MongoDB({ db: 'mongodb://localhost/vidly' })
       ),
     ],
+    rejectionHandlers: [
+      new winston.transports.File({
+        filename: 'rejections.log',
+        handleRejections: true,
+      }),
+    ],
+    exceptionHandlers: [
+      new winston.transports.File({
+        filename: 'uncaughtExceptions.log',
+        handleExceptions: true,
+      }),
+    ],
   });
-
-  winston.exceptions.handle(
-    new winston.transports.File({
-      filename: 'uncaughtExceptions.log',
-      handleExceptions: true,
-    })
-  );
-
-  winston.rejections.handle(
-    new winston.transports.File({
-      filename: 'rejections.log',
-      handleRejections: true,
-    })
-  );
 };

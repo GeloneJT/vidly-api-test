@@ -11,10 +11,6 @@ require('./startup/routes')(app);
 require('./startup/db_connect')();
 require('./startup/config')();
 
-// throw new Error('Something failed durting startup'); //  Create an unhandled  exception on server startup
-// const p = Promise.reject(new Error('Failed miserably'))  // Create an unhandled rejection
-// p.then(() => console.log('Done'));
-
 //  Creates a server
 const port = process.env.PORT || 3000;
 app.listen(port, () =>winston.info(`Listening on port ${port}....`));
