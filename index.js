@@ -3,13 +3,13 @@
  * The following program is built to simulate a movie genre directory webpage
  *  It showcases the simplicities of using Express.js and CRUD methods
  */
-const { default: mongoose } = require('mongoose');
 const express = require('express');
 const config = require('config');
 const winston = require('winston');
 const app = express();
 require('winston-mongodb');
 require('./startup/routes')(app)
+require('./startup/db_connect')();
 
 winston.createLogger({
   format: winston.format.metadata(),
@@ -44,10 +44,7 @@ if (!config.get('jwtPrivateKey')) {
   process.exit(1);
 }
 
-mongoose
-  .connect('mongodb://localhost/vidly')
-  .then(() => console.log('Connected to MongoDB....'))
-  .catch((err) => console.error('Could not connect to MongoDB...', err));
+
 
 
 
