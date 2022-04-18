@@ -2,23 +2,28 @@ const winston = require('winston');
 require('winston-mongodb');
 
 module.exports = function () {
-  winston.createLogger({
-    format: winston.format.metadata(),
+  const logger = winston.createLogger({
+    format: winston.format.json(),
     transports: [
       winston.add(new winston.transports.File({ filename: 'logfile.log' })),
       winston.add(
         new winston.transports.MongoDB({ db: 'mongodb://localhost/vidly' })
       ),
     ],
-    rejectionHandlers: [
-      new winston.transports.File({
-        filename: 'rejections.log',
-      }),
+    handleExceptions: [
+      winston.exceptions.handle(
+        new winston.transports.File({
+          filename: 'uncaughtExceptions.log',
+        }),
+        new winston.transports.Console({})
+      ),
     ],
-    exceptionHandlers: [
-      new winston.transports.File({
-        filename: 'uncaughtExceptions.log',
-      }),
-    ],
+    // handleRejections: [
+    //   winston.rejections.handle(
+    //     new winston.transports.File({
+    //       filename: 'rejections.log',
+    //     })
+    //   ),
+    // ],
   });
 };
