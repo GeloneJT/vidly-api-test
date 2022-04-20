@@ -52,7 +52,24 @@ None
 
 ## Tests
 
-N/A
+This application uses Jest for test exercises.  To setup Jest run the following command within the root folder of the application in your terminal:
+```
+npm i jest --save-dev
+```
+Once the Jest package is installed procced to your `package.json` file and navigate to:` "scripts"` > `"test"` changing it to `jest --watchAll`. Your `scripts` should look like:
+```
+"scripts": {
+    "test": "jest --watchAll"
+  },
+  ```
+With `--watchAll` Jest will watch for code changes and rerun tests whenver a code change is made and saved. If this feature is not desired remove the `--watchAll` flag.<br>
+Tests can be written and organized based on their type within the tests directory under the appropriate directory/sub-directory.
+<br>
+To execute your tests open up a terminal within the project and run:
+```
+npm test
+```
+Jest will run all test suites and display a pass or fail result in the terminal. 
 
 ## GitHub
 
