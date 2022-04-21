@@ -14,7 +14,7 @@ const Genre = mongoose.model('Genre', genreSchema);
 //  Validates the data enterd by user in PUT and POST methods
 function validateGenre(genre) {
   const schema = Joi.object({
-    type: Joi.string().min(3).required(),
+    type: Joi.string().min(5).required(),
   });
   return schema.validate(genre, Joi);
 }

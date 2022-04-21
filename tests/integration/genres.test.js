@@ -1,6 +1,6 @@
 const request = require('supertest');
-const { default: mongoose } = require('mongoose');
 const { Genre } = require('../../models/genre');
+const { User } = require('../../models/user');
 let server;
 
 describe('/api/genres', () => {
@@ -49,6 +49,15 @@ describe('/api/genres', () => {
         .post('/api/genres')
         .send({ type: 'genre1' });
       expect(res.status).toBe(401);
+    });
+
+    it('should return a 400 if genre is less than 5 characters', async () => {
+      const token = new User().generateAuthToken()
+      const res = await request(server)
+        .post('/api/genres')
+        .set('x-auth-token', token)
+        .send({ type: '1234' });
+      expect(res.status).toBe(400);
     });
   });
 });
