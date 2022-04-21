@@ -1,7 +1,7 @@
 const request = require('supertest');
 const { Genre } = require('../../../models/genre');
 const { User } = require('../../../models/user');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 let server;
 
 describe('/api/genres', () => {
@@ -44,7 +44,7 @@ describe('/api/genres', () => {
     });
 
     it('should return 404 if no genre with the given id exists', async () => {
-      const id = mongoose.Types.ObjectId()
+      const id = mongoose.Types.ObjectId();
       const res = await request(server).get('/api/genres/' + id);
 
       expect(res.status).toBe(404);
@@ -52,7 +52,7 @@ describe('/api/genres', () => {
   });
 
   describe('POST /', () => {
-    // Define the happy path, and then in each test, we change 
+    // Define the happy path, and then in each test, we change
     // one parameter that clearly aligns with the name of the test
     let token;
     let type;
@@ -106,6 +106,51 @@ describe('/api/genres', () => {
 
       expect(res.body).toHaveProperty('_id');
       expect(res.body).toHaveProperty('type', 'genre1');
+    });
+  });
+
+  describe('DELETE', () => {
+    let token;
+    let genre;
+    let id;
+
+    const exec = async () => {
+      return await request(server)
+        .delete('/api/genres/' + id)
+        .set('x-auth-token', token)
+        .send();
+    };
+
+    beforeEach(async () => {
+      genre = new Genre({ type: 'genre1' });
+      await genre.save();
+
+      id = genre._id;
+      token = new User({ isAdmin: true }).generateAuthToken();
+    });
+
+    it('should delete genre input if id was found', async () => {
+      await exec();
+
+      const genreDb = await Genre.findById(id);
+
+      expect(genreDb).toBeNull();
+    });
+
+    it('should return with 404 if invalid id is given', async () => {
+      id = 1;
+
+      const res = await exec();
+
+      expect(res.status).toBe(404);
+    });
+
+    it('should return with 404 if no genre with the given id was found', async () => {
+      id = mongoose.Types.ObjectId();
+
+      const res = await exec();
+
+      expect(res.status).toBe(404);
     });
   });
 });
