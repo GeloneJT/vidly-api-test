@@ -1,9 +1,9 @@
 const asyncMiddleware = require('../middleware/async');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const validateObjectId = require('../middleware/validateObjectId');
 const { Genre, validate } = require('../models/genre');
 const express = require('express');
-const { default: mongoose } = require('mongoose');
 const router = express.Router();
 
 //  GET Endpoint to get all genres
@@ -17,21 +17,14 @@ router.get(
 );
 
 //  GET Endpoint to find a genre based on the ID number
-router.get(
-  '/:id',
-  asyncMiddleware(async (req, res) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id))
-      return res.status(404).send('Invalid ID');
-    const genre = await Genre.findById(req.params.id);
+router.get('/:id', validateObjectId, async (req, res) => {
+  const genre = await Genre.findById(req.params.id);
 
-    if (!genre)
-      return res
-        .status(404)
-        .send('The genre with the given type was not found');
+  if (!genre)
+    return res.status(404).send('The genre with the given type was not found');
 
-    res.send(genre);
-  })
-);
+  res.send(genre);
+});
 
 //  POST Route to add new genres
 router.post(
