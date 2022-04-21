@@ -27,18 +27,15 @@ router.get('/:id', validateObjectId, async (req, res) => {
 });
 
 //  POST Route to add new genres
-router.post(
-  '/',
-  asyncMiddleware(auth, async (req, res) => {
-    const { error } = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+router.post('/', auth, async (req, res) => {
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
-    let genre = new Genre({ type: req.body.type });
-    genre = await genre.save();
+  let genre = new Genre({ type: req.body.type });
+  genre = await genre.save();
 
-    res.send(genre);
-  })
-);
+  res.send(genre);
+});
 
 //  PUT Route to update the genre type based on the ID
 router.put(

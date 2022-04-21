@@ -1,5 +1,7 @@
-const winston = require('winston');
+require('express-async-errors');
 require('winston-mongodb');
+const winston = require('winston');
+
 
 module.exports = function () {
   const logger = winston.createLogger({
