@@ -3,6 +3,7 @@ const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const { Genre, validate } = require('../models/genre');
 const express = require('express');
+const { default: mongoose } = require('mongoose');
 const router = express.Router();
 
 //  GET Endpoint to get all genres
@@ -19,6 +20,8 @@ router.get(
 router.get(
   '/:id',
   asyncMiddleware(async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id))
+      return res.status(404).send('Invalid ID');
     const genre = await Genre.findById(req.params.id);
 
     if (!genre)
